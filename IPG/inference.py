@@ -188,18 +188,20 @@ def log_validation(
         w, h = 128, 256
         ref_image_pil = ref_image_list[0].resize((w, h))
         num = 1 + len(pose_paths) * 2
-        canvas = Image.new("RGB", (w *num, h), "white")
-        canvas.paste(ref_image_pil, (0, 0))
+        #canvas = Image.new("RGB", (w *num, h), "white")
+        #canvas.paste(ref_image_pil, (0, 0))
 
         for i in range(len(pose_paths)):
             image_i = image[i, :, 0].permute(1, 2, 0).cpu().numpy()
             res_image_pil = Image.fromarray((image_i * 255).astype(np.uint8))
             res_image_pil = res_image_pil.resize((w, h))
             pose_image_pil = pose_image_list[i].resize((w, h))
-            canvas.paste(pose_image_pil, (i*w*2 +w, 0))
-            canvas.paste(res_image_pil, (i*w*2 +2*w, 0))
+            out_img = os.path.join(out_dir, ref_name.replace(".jpg","")+"_"+str(i)+".jpeg")
+            res_image_pil.save(out_img)
+            #canvas.paste(pose_image_pil, (i*w*2 +w, 0))
+            #canvas.paste(res_image_pil, (i*w*2 +2*w, 0))
         out = os.path.join(out_dir, ref_name)
-        canvas.save(out)
+        #canvas.save(out)
         print(f"Saved to {out}")
         inputs_list = []
         ref_image_list = []
