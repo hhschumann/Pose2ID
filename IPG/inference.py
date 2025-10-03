@@ -134,9 +134,12 @@ def log_validation(
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
 
-    img_dir = args.ref_dir
-    img_list = os.listdir(img_dir)
-    img_list = [os.path.join(img_dir, x) for x in img_list]
+    if args.ref_img is not None:
+        img_list = [args.ref_img]
+    else:
+        img_dir = args.ref_dir
+        img_list = os.listdir(img_dir)
+        img_list = [os.path.join(img_dir, x) for x in img_list]
 
     pose_dir = args.pose_dir
     pose_paths = os.listdir(pose_dir)
@@ -366,6 +369,7 @@ if __name__ == "__main__":
     parser.add_argument("--ckpt_dir", type=str, default="pretrained")
     parser.add_argument("--pose_dir", type=str, default="standard_poses")
     parser.add_argument("--ref_dir", type=str, default="demo")
+    parser.add_argument("--ref_img", type=str, default=None)
     parser.add_argument("--out_dir", type=str, default="output")
     parser.add_argument("--config", type=str, default="./configs/inference.yaml")
     args = parser.parse_args()
